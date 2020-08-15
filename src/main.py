@@ -1,9 +1,11 @@
 import random
+
 import telebot
 from youtubesearchpython.videos__search import SearchVideos as searchYoutube
-from telebot import types
 
 bot = telebot.TeleBot('token')
+
+from telebot import types
 
 tracks = ['Rock Creek Park - Blackbyrds',
           'The Mexican - Babe Ruth',
@@ -47,22 +49,19 @@ tracks = ['Rock Creek Park - Blackbyrds',
           'Power - Earth, Wind & Fire',
           'New Bell - Manu Dibango']
 
+
 @bot.message_handler(content_types=['text'])
 def get_text_messages(message):
     if message.text == "/start":
-        bot.send_message(message.from_user.id, "Hey There! \n I am a Rocker Bot \n Get ready for training")
- 
+
         keyboard = types.InlineKeyboardMarkup()
 
-        key_yes = types.InlineKeyboardButton(text='YES', callback_data='tracks')
+        key_get = types.InlineKeyboardButton(text='GET SONG', callback_data='tracks')
 
-        keyboard.add(key_yes)
+        keyboard.add(key_get)
 
-        key_no = types.InlineKeyboardButton(text='NO', callback_data='no')
-
-        keyboard.add(key_no)
-
-        bot.send_message(message.from_user.id, text='Do you wanna dance?', reply_markup=keyboard)
+        bot.send_message(message.from_user.id, text='Push the button to get \n random UpRock Song',
+                         reply_markup=keyboard)
 
     elif message.text == "/help":
 
@@ -70,7 +69,7 @@ def get_text_messages(message):
 
     else:
 
-        bot.send_message(message.from_user.id, "You are dumb press /help.")
+        bot.send_message(message.from_user.id, "press /help.")
 
 
 def linker():
@@ -83,10 +82,8 @@ def linker():
 def callback_worker(call):
     if call.data == "tracks":
         msg = linker()
+
         bot.send_message(call.message.chat.id, msg)
-    elif call.data != "tracks":
-        msgg = ('YOU SUCK')
-        bot.send_message(call.message.chat.id, msgg)
 
 
 bot.polling(none_stop=True, interval=0)
